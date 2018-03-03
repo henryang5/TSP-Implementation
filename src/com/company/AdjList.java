@@ -1,6 +1,9 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 //Adjacency List Implementation based on File Reading
     //Example:
@@ -11,6 +14,7 @@ import java.util.ArrayList;
 
 public class AdjList<T> {
     private ArrayList<VertexConnection<T>> adjList = new ArrayList<VertexConnection<T>>();
+    private HashMap<T, Integer> vertexMap = new HashMap<T, Integer>();
 
     //Inserts node in the graph
     //Returns True if the node was successfully deleted
@@ -21,9 +25,14 @@ public class AdjList<T> {
             VertexConnection<T> vertexConnection = new VertexConnection<>();
             vertexConnection.setVertex(vertexList[i]);
             adjList.add(vertexConnection);
+            vertexMap.put(vertexList[i], i);
         }
 
         return true;
+    }
+
+    public HashMap<T, Integer> getVertexMap(){
+        return vertexMap;
     }
 
     public boolean addEdge(T firstVertex, T secondVertex, int weight){
@@ -33,10 +42,10 @@ public class AdjList<T> {
         for(int i = 0; i < adjList.size(); i++){
             if(adjList.get(i).getVertexConnection().getVertex() == firstVertex){
                 //add edge to the vertex connection
-                adjList.get(i).getVertexConnection().insertEdge(firstVertex, weight);
+                adjList.get(i).getVertexConnection().insertEdge(secondVertex, weight);
             }
             else if(adjList.get(i).getVertexConnection().getVertex() == secondVertex){
-                adjList.get(i).getVertexConnection().insertEdge(secondVertex, weight);
+                adjList.get(i).getVertexConnection().insertEdge(firstVertex, weight);
             }
         }
 
@@ -61,9 +70,9 @@ public class AdjList<T> {
                 System.out.print(adjList.get(i).getVertexConnection().getList().get(j).getVertex());
                 System.out.print(':');
                 System.out.print(adjList.get(i).getVertexConnection().getList().get(j).getWeight());
-                System.out.print(' ');
+                System.out.print(" -> ");
             }
-            System.out.print('\n');
+            System.out.print("NULL\n");
         }
     }
 
@@ -99,5 +108,52 @@ public class AdjList<T> {
 
         //Vertices are not connected
         return -1;
+    }
+
+    //Getter to return adjList
+    ArrayList<VertexConnection<T>> getAdjList(){
+        return this.adjList;
+    }
+
+    //Nearest Neighbor Algorithm
+    //Returns sum of weights for the path taken
+    //If all nodes are not visited, returns -1
+    public int nearestNeighbor(AdjList<T> Graph, T startVertex){
+        final int MAX_INT = 0xFFFFFFF; //value is not unsigned thus using 7 Hex Fs
+        int sum = 0;
+
+        Set<T> visitedSet = new HashSet<T>();
+        visitedSet.add(startVertex);
+
+        //secret message: are you watching me lol....cuz I'm watching you ({O.O})
+
+        int numVisited = visitedSet.size();
+        int minWeight = MAX_INT;
+        int numberOfVertices = Graph.getAdjList().size();
+        T minEdge = startVertex;
+
+        int index = Graph.getVertexMap().get(startVertex);
+
+        for(int i = 0; i < numberOfVertices; i++){
+            for(int j = 0; j < Graph.getAdjList().get(index).getList().size(); j++) {
+                if(minWeight > Graph.getAdjList().get(index).getList().get(j).getWeight() &&
+                        !visitedSet.contains(Graph.getAdjList().get(index).getList().get(j).getVertex())){
+                    minWeight = Graph.getAdjList().get(index).getList().get(j).getWeight();
+                    minEdge = Graph.getAdjList().get(index).getList().get(j).getVertex();
+                }
+            }
+            if(visitedSet.size() != numberOfVertices) {
+                sum = sum + minWeight;
+                index = Graph.getVertexMap().get(minEdge);
+                visitedSet.add(minEdge);
+            }
+        }
+
+        //All nodes are unable to be visited without revisiting nodes
+        if(visitedSet.size() != numberOfVertices){
+            return -1;
+        }
+
+        return sum;
     }
 }

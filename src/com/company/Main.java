@@ -21,5 +21,10 @@ public class Main {
         //Prints Representation of Adjacency List
         System.out.println("\nHere the Adjacency List");
         adjList.printGraph();
+
+        System.out.print('\n');
+        //Nearest Neighbor Algorithm (answer should be 35)
+        int sum = adjList.nearestNeighbor(adjList, "D");
+        System.out.println("\nNearest Neighbor Sum: " + sum);
     }
 }
