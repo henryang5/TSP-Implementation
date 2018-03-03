@@ -154,8 +154,9 @@ public class AdjList<T> {
                 }
             }
             if(visitedSet.size() != numberOfVertices) {
-                //Update sum
+                //Update sum and reset minWeight
                 sum = sum + minWeight;
+                minWeight = MAX_INT;
 
                 //Prints out Path
                 System.out.print(minEdge + " => ");
