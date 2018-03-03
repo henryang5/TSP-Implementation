@@ -43,7 +43,10 @@ public class Main {
 
         //Repetitive Nearest Algorithm
         System.out.println("Repetitive Nearest Path Algorithm:");
-        int repetitiveSum = adjList.repetitiveNearestNeighbor(adjList);
-        System.out.println("Most optimal path using the nearest neighbor algorithm sum's: " + repetitiveSum);
+        String[] vertexSum = new String[2];
+        vertexSum = adjList.repetitiveNearestNeighbor(adjList);
+
+        adjList.nearestNeighbor(adjList, vertexSum[1]);
+        System.out.println("Most optimal path using the nearest neighbor algorithm sum's: " + vertexSum[0]);
     }
 }

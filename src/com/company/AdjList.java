@@ -179,18 +179,23 @@ public class AdjList<T> {
         return sum;
     }
 
-    public int repetitiveNearestNeighbor(AdjList<T> Graph){
+
+    public String[] repetitiveNearestNeighbor(AdjList<T> Graph){
         final int numberOfVertices = Graph.getAdjList().size();
         int minSum = Integer.MAX_VALUE;
         int currentPathSum;
-
+        String minVertex = "";
+        String[] vertexSum= new String[2];
         for(int i = 0; i < numberOfVertices; i++){
             currentPathSum = nearestNeighbor(Graph,  Graph.getAdjList().get(i).getVertex());
             if (currentPathSum < minSum && currentPathSum != -1){
                 minSum = currentPathSum;
+                minVertex = (String)Graph.getAdjList().get(i).getVertex();
             }
         }
-        return minSum;
+        vertexSum[0] = String.valueOf(minSum);
+        vertexSum[1] = minVertex;
+        return vertexSum;
     }
 
 }
