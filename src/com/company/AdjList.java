@@ -122,6 +122,10 @@ public class AdjList<T> {
         final int MAX_INT = Integer.MAX_VALUE; //Max possible weight that is unsigned
         int sum = 0;
 
+        int numberOfEdgesInLinkedList;
+        int currentEdgeWeight;
+        boolean vertexHasBeenVisited;
+
         Set<T> visitedSet = new HashSet<T>();
         visitedSet.add(startVertex);
 
@@ -130,24 +134,40 @@ public class AdjList<T> {
         int numVisited = visitedSet.size();
         int minWeight = MAX_INT;
         int numberOfVertices = Graph.getAdjList().size();
-        T minEdge = startVertex;
 
+        T minEdge = startVertex;
+        System.out.println("Nearest Neighbor Path: ");
+        System.out.print(minEdge + " => ");
+
+        //Starting index based on HashMap within AdjList
         int index = Graph.getVertexMap().get(startVertex);
 
         for(int i = 0; i < numberOfVertices; i++){
-            for(int j = 0; j < Graph.getAdjList().get(index).getList().size(); j++) {
-                if(minWeight > Graph.getAdjList().get(index).getList().get(j).getWeight() &&
-                        !visitedSet.contains(Graph.getAdjList().get(index).getList().get(j).getVertex())){
+            numberOfEdgesInLinkedList = Graph.getAdjList().get(index).getList().size();
+            for(int j = 0; j < numberOfEdgesInLinkedList; j++) {
+                currentEdgeWeight = Graph.getAdjList().get(index).getList().get(j).getWeight();
+                vertexHasBeenVisited = visitedSet.contains(Graph.getAdjList().get(index).getList().get(j).getVertex());
+                if(minWeight > currentEdgeWeight && !vertexHasBeenVisited){
+                    //Update minWeight and minEdge
                     minWeight = Graph.getAdjList().get(index).getList().get(j).getWeight();
                     minEdge = Graph.getAdjList().get(index).getList().get(j).getVertex();
                 }
             }
             if(visitedSet.size() != numberOfVertices) {
+                //Update sum
                 sum = sum + minWeight;
+
+                //Prints out Path
+                System.out.print(minEdge + " => ");
+
+                //Grabs new index based on Hashmap within AdjList
                 index = Graph.getVertexMap().get(minEdge);
+                //Marks node as visited by adding it to the set
                 visitedSet.add(minEdge);
             }
         }
+
+        System.out.println("NULL");
 
         //All nodes are unable to be visited without revisiting nodes
         if(visitedSet.size() != numberOfVertices){
