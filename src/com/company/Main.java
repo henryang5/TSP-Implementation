@@ -31,9 +31,19 @@ public class Main {
         System.out.println("\nHere is the Adjacency List:");
         adjList.printGraph();
 
+        System.out.println("--------------------------------------------------");
+
         System.out.print('\n');
-        //Nearest Neighbor Algorithm (answer should be 35)
+        //Nearest Neighbor Algorithm
         int sum = adjList.nearestNeighbor(adjList, "A");
-        System.out.println("Nearest Neighbor Sum: " + sum);
+        System.out.println("Sum of path: " + sum);
+        System.out.print('\n');
+
+        System.out.println("--------------------------------------------------");
+
+        //Repetitive Nearest Algorithm
+        System.out.println("Repetitive Nearest Path Algorithm:");
+        int repetitiveSum = adjList.repetitiveNearestNeighbor(adjList);
+        System.out.println("Most optimal path using the nearest neighbor algorithm sum's: " + repetitiveSum);
     }
 }

@@ -1,5 +1,6 @@
 package com.company;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -136,7 +137,7 @@ public class AdjList<T> {
         int numberOfVertices = Graph.getAdjList().size();
 
         T minEdge = startVertex;
-        System.out.println("Nearest Neighbor Path: ");
+        System.out.println("Nearest Neighbor Path starting at " + startVertex + ": ");
         System.out.print(minEdge + " => ");
 
         //Starting index based on HashMap within AdjList
@@ -177,4 +178,19 @@ public class AdjList<T> {
 
         return sum;
     }
+
+    public int repetitiveNearestNeighbor(AdjList<T> Graph){
+        final int numberOfVertices = Graph.getAdjList().size();
+        int minSum = Integer.MAX_VALUE;
+        int currentPathSum;
+
+        for(int i = 0; i < numberOfVertices; i++){
+            currentPathSum = nearestNeighbor(Graph,  Graph.getAdjList().get(i).getVertex());
+            if (currentPathSum < minSum && currentPathSum != -1){
+                minSum = currentPathSum;
+            }
+        }
+        return minSum;
+    }
+
 }
