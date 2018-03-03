@@ -119,7 +119,7 @@ public class AdjList<T> {
     //Returns sum of weights for the path taken
     //If all nodes are not visited, returns -1
     public int nearestNeighbor(AdjList<T> Graph, T startVertex){
-        final int MAX_INT = 0xFFFFFFF; //value is not unsigned thus using 7 Hex Fs
+        final int MAX_INT = Integer.MAX_VALUE; //Max possible weight that is unsigned
         int sum = 0;
 
         Set<T> visitedSet = new HashSet<T>();
